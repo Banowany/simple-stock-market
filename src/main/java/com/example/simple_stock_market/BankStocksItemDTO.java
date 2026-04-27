@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockItemDTO {
+public class BankStocksItemDTO {
     private String name;
     private Integer quantity;
 }

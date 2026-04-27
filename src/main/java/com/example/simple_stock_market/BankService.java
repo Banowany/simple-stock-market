@@ -14,14 +14,14 @@ public class BankService {
     }
 
     @Transactional
-    public void setBankState(List<StockItemDTO> newStocksDTO) {
+    public void setBankState(List<BankStocksItemDTO> newStocksDTO) {
         var mapper = new BankStockMapper();
         var newStocks = newStocksDTO.stream().map(mapper::fromDTO).toList();
         bankStockRepository.deleteAll();
         bankStockRepository.saveAll(newStocks);
     }
 
-    public List<StockItemDTO> getAllBankStocks() {
+    public List<BankStocksItemDTO> getAllBankStocks() {
         var stocks = bankStockRepository.findAll();
         var mappper = new BankStockMapper();
         return stocks.stream().map(mappper::toDTO).toList();

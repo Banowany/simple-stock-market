@@ -1,17 +1,17 @@
 package com.example.simple_stock_market;
 
 public class BankStockMapper {
-    public StockItemDTO toDTO(BankStock bankStock) {
-        var res = new StockItemDTO();
+    public BankStocksItemDTO toDTO(BankStock bankStock) {
+        var res = new BankStocksItemDTO();
         res.setName(bankStock.getName());
         res.setQuantity(bankStock.getQuantity());
         return res;
     }
 
-    public BankStock fromDTO(StockItemDTO stockItemDTO) {
+    public BankStock fromDTO(BankStocksItemDTO bankStocksItemDTO) {
         var res = new BankStock();
-        res.setName(stockItemDTO.getName());
-        res.setQuantity(stockItemDTO.getQuantity());
+        res.setName(bankStocksItemDTO.getName());
+        res.setQuantity(bankStocksItemDTO.getQuantity());
         return res;
     }
 }
