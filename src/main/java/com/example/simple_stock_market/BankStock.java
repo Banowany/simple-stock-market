@@ -1,24 +1,19 @@
 package com.example.simple_stock_market;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "bank_stocks")
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BankStock {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "stock_id", referencedColumnName = "id", unique = true, nullable = false)
-    private Stock stock;
+    @EqualsAndHashCode.Include
+    private String name;
 
     @Column(nullable = false)
-    private Long quantity;
+    private Integer quantity;
 }
