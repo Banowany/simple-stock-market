@@ -6,15 +6,23 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Builder
 public class WalletResponseDTO {
     private String id;
     private List<StockItem> stocks;
 
+    public WalletResponseDTO(String id, List<StockItem> stocks) {
+        this.id = id;
+        this.stocks = stocks;
+    }
+
     @Data
-    @Builder
     public static class StockItem {
         private String name;
         private Integer quantity;
+
+        public StockItem(String name, Integer quantity) {
+            this.name = name;
+            this.quantity = quantity;
+        }
     }
 }

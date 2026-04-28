@@ -1,6 +1,7 @@
 package com.example.simple_stock_market.service;
 
 import com.example.simple_stock_market.entity.Wallet;
+import com.example.simple_stock_market.mapper.WalletMapper;
 import com.example.simple_stock_market.repository.WalletRepository;
 import com.example.simple_stock_market.dto.WalletResponseDTO;
 import com.example.simple_stock_market.repository.WalletStockRepository;
@@ -14,10 +15,12 @@ import java.util.List;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletStockRepository walletStockRepository;
+    private final WalletMapper walletMapper;
 
-    public WalletService(WalletRepository walletRepository, WalletStockRepository walletStockRepository) {
+    public WalletService(WalletRepository walletRepository, WalletStockRepository walletStockRepository, WalletMapper walletMapper) {
         this.walletRepository = walletRepository;
         this.walletStockRepository = walletStockRepository;
+        this.walletMapper = walletMapper;
     }
 
     private Wallet getWalletOrThrow(String walletId) {
@@ -32,19 +35,7 @@ public class WalletService {
         // Rzucamy wyjątkiem jeśli nie istnieje
         Wallet wallet = getWalletOrThrow(walletId);
 
-        List<WalletResponseDTO.StockItem> stocks = walletStockRepository
-                .findByWalletId(walletId)
-                .stream()
-                .map(ws -> WalletResponseDTO.StockItem.builder()
-                        .name(ws.getStock().getName())
-                        .quantity(ws.getQuantity())
-                        .build())
-                .toList();
-
-        return WalletResponseDTO.builder()
-                .id(walletId)
-                .stocks(stocks)
-                .build();
+        return walletMapper.toResponseDTO(wallet);
     }
 
     public void createWallet(String walletId) {
