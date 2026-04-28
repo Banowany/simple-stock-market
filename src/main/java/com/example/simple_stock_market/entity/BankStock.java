@@ -1,4 +1,4 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

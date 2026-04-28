@@ -1,4 +1,7 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.mapper;
+
+import com.example.simple_stock_market.dto.BankStocksItemDTO;
+import com.example.simple_stock_market.entity.BankStock;
 
 public class BankStockMapper {
     public BankStocksItemDTO toDTO(BankStock bankStock) {

@@ -1,10 +1,9 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.controller;
 
+import com.example.simple_stock_market.service.BankService;
+import com.example.simple_stock_market.dto.BankStocksDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/stocks")

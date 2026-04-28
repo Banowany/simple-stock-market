@@ -1,5 +1,8 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.service;
 
+import com.example.simple_stock_market.mapper.BankStockMapper;
+import com.example.simple_stock_market.repository.BankStockRepository;
+import com.example.simple_stock_market.dto.BankStocksItemDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

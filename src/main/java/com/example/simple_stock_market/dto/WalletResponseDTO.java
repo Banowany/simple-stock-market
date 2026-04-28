@@ -1,4 +1,4 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class WalletResponse {
+public class WalletResponseDTO {
     private String id;
     private List<StockItem> stocks;
 

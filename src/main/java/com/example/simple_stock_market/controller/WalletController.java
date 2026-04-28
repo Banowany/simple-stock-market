@@ -1,5 +1,7 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.controller;
 
+import com.example.simple_stock_market.dto.WalletResponseDTO;
+import com.example.simple_stock_market.service.WalletService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,9 @@ public class WalletController {
     }
 
     @GetMapping("/{wallet_id}")
-    public ResponseEntity<WalletResponse> getWallet(@PathVariable("wallet_id") String walletId) {
+    public ResponseEntity<WalletResponseDTO> getWallet(@PathVariable("wallet_id") String walletId) {
 //        walletService.createWallet(walletId);
-        WalletResponse response = walletService.getWallet(walletId);
+        WalletResponseDTO response = walletService.getWallet(walletId);
         return ResponseEntity.ok(response);
     }
 }

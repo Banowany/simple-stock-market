@@ -1,7 +1,6 @@
-package com.example.simple_stock_market;
+package com.example.simple_stock_market.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
