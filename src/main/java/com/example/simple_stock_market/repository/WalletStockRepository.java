@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WalletStockRepository extends JpaRepository<WalletStock, WalletStockId> {
-    List<WalletStock> findByWalletId(String walletId);
+    List<WalletStock> findByIdWalletId(String walletId);
 
     @Modifying
     @Query(value = """
@@ -27,8 +27,8 @@ public interface WalletStockRepository extends JpaRepository<WalletStock, Wallet
     @Query("""
         UPDATE WalletStock w
         SET w.quantity = w.quantity - 1
-        WHERE w.wallet.id = :walletId
-          AND w.stock.name = :stockName
+        WHERE w.id.walletId = :walletId
+          AND w.id.stockName = :stockName
           AND w.quantity > 0
     """)
     int decrement(@Param("walletId") String walletId,
@@ -37,8 +37,8 @@ public interface WalletStockRepository extends JpaRepository<WalletStock, Wallet
     @Modifying
     @Query("""
         DELETE FROM WalletStock w
-        WHERE w.wallet.id = :walletId
-          AND w.stock.name = :stockName
+        WHERE w.id.walletId = :walletId
+          AND w.id.stockName = :stockName
           AND w.quantity = 0
     """)
     void deleteIfZero(@Param("walletId") String walletId,
@@ -47,9 +47,9 @@ public interface WalletStockRepository extends JpaRepository<WalletStock, Wallet
     @Query("""
         SELECT w.quantity
         FROM WalletStock w
-        WHERE w.wallet.id = :walletId
-          AND w.stock.name = :stockName
+        WHERE w.id.walletId = :walletId
+          AND w.id.stockName = :stockName
     """)
     Optional<Integer> findQuantity(@Param("walletId") String walletId,
-                          @Param("stockName") String stockName);
+                                   @Param("stockName") String stockName);
 }

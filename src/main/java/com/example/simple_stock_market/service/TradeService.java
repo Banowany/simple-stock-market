@@ -1,31 +1,23 @@
 package com.example.simple_stock_market.service;
 
-import com.example.simple_stock_market.entity.BankStock;
 import com.example.simple_stock_market.entity.TradeLog;
-import com.example.simple_stock_market.entity.Wallet;
 import com.example.simple_stock_market.repository.BankStockRepository;
 import com.example.simple_stock_market.repository.TradeLogRepository;
-import com.example.simple_stock_market.repository.WalletRepository;
 import com.example.simple_stock_market.repository.WalletStockRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.Serializable;
 
 @Service
 public class TradeService {
     private final BankStockRepository bankStockRepository;
-    private final WalletRepository walletRepository;
     private final WalletStockRepository walletStockRepository;
     private final TradeLogRepository tradeLogRepository;
 
-    public TradeService(BankStockRepository bankStockRepository, WalletRepository walletRepository, WalletStockRepository walletStockRepository, TradeLogRepository tradeLogRepository) {
+    public TradeService(BankStockRepository bankStockRepository, WalletStockRepository walletStockRepository, TradeLogRepository tradeLogRepository) {
         this.bankStockRepository = bankStockRepository;
-        this.walletRepository = walletRepository;
         this.walletStockRepository = walletStockRepository;
         this.tradeLogRepository = tradeLogRepository;
     }
@@ -33,8 +25,6 @@ public class TradeService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void executeTrade(String walletId, String stockName, String type) {
-        walletRepository.createIfNotExists(walletId);
-
         if (!bankStockRepository.existsById(stockName)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,

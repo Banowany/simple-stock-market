@@ -7,17 +7,15 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@IdClass(WalletStockId.class)
+@Table(name = "wallet_stock")
 public class WalletStock {
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+    @EmbeddedId
+    private WalletStockId id;
 
-    @Id
-    @ManyToOne
+
+    @MapsId("stockName")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_name")
     private BankStock stock;
 

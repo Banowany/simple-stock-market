@@ -1,7 +1,6 @@
 package com.example.simple_stock_market.mapper;
 
 import com.example.simple_stock_market.dto.WalletResponseDTO;
-import com.example.simple_stock_market.entity.Wallet;
 import com.example.simple_stock_market.entity.WalletStock;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,10 @@ public class WalletMapper {
         );
     }
 
-    public WalletResponseDTO toResponseDTO(Wallet wallet) {
-        List<WalletResponseDTO.StockItem> stocksDTO = wallet.getStocks().stream().map(this::toStockItem).toList();
-        return new WalletResponseDTO(wallet.getId(), stocksDTO);
+    public WalletResponseDTO toResponseDTO(String walletId, List<WalletStock> stocks) {
+        return new WalletResponseDTO(
+                walletId,
+                stocks.stream().map(this::toStockItem).toList()
+        );
     }
 }
