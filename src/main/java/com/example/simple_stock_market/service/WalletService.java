@@ -3,9 +3,7 @@ package com.example.simple_stock_market.service;
 import com.example.simple_stock_market.mapper.WalletMapper;
 import com.example.simple_stock_market.dto.WalletResponseDTO;
 import com.example.simple_stock_market.repository.WalletStockRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class WalletService {

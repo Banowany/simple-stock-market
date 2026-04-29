@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/wallets")
+@RequestMapping("/wallets/{wallet_id}")
 public class WalletController {
     private final WalletService walletService;
     private final TradeService tradeService;
@@ -18,13 +18,12 @@ public class WalletController {
         this.tradeService = tradeService;
     }
 
-    @GetMapping("/{wallet_id}")
+    @GetMapping
     public ResponseEntity<WalletResponseDTO> getWallet(@PathVariable("wallet_id") String walletId) {
-//        walletService.createWallet(walletId);
         WalletResponseDTO response = walletService.getWallet(walletId);
         return ResponseEntity.ok(response);
     }
-    @PostMapping("/{wallet_id}/stocks/{stock_name}")
+    @PostMapping("/stocks/{stock_name}")
     public ResponseEntity<Void> trade(
             @PathVariable("wallet_id") String walletId,
             @PathVariable("stock_name") String stockName,
@@ -33,10 +32,10 @@ public class WalletController {
         tradeService.executeTrade(walletId, stockName, request.getType());
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/{walletId}/stocks/{stockName}")
+    @GetMapping("/stocks/{stock_name}")
     public ResponseEntity<Integer> getQuantity(
-            @PathVariable("walletId") String walletId,
-            @PathVariable("stockName") String stockName
+            @PathVariable("wallet_id") String walletId,
+            @PathVariable("stock_name") String stockName
     ) {
         int quantity = walletService.getQuantity(walletId, stockName);
         return ResponseEntity.ok(quantity);

@@ -1,8 +1,10 @@
 package com.example.simple_stock_market.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@AllArgsConstructor
+@Getter
 public class TradeRequestDTO {
     private String type;
 }
