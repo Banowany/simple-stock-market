@@ -15,10 +15,10 @@ public interface WalletStockRepository extends JpaRepository<WalletStock, Wallet
 
     @Modifying
     @Query(value = """
-        INSERT INTO wallet_stock (wallet_id, stock_name, quantity)
+        INSERT INTO wallet_stocks (wallet_id, stock_name, quantity)
         VALUES (:walletId, :stockName, 1)
         ON CONFLICT (wallet_id, stock_name)
-        DO UPDATE SET quantity = wallet_stock.quantity + 1
+        DO UPDATE SET quantity = wallet_stocks.quantity + 1
     """, nativeQuery = true)
     void upsertIncrement(@Param("walletId") String walletId,
                          @Param("stockName") String stockName);

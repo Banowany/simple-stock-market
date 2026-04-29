@@ -7,13 +7,17 @@ import lombok.*;
 @Table(name = "bank_stocks")
 @NoArgsConstructor
 @Getter
-@Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BankStock {
     @Id
-    @EqualsAndHashCode.Include
     private String name;
 
     @Column(nullable = false)
     private Integer quantity;
+
+    public static BankStock of(String name, Integer quantity) {
+        var res = new BankStock();
+        res.name = name;
+        res.quantity = quantity;
+        return res;
+    }
 }

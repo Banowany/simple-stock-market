@@ -1,7 +1,7 @@
 package com.example.simple_stock_market.controller;
 
 import com.example.simple_stock_market.service.BankService;
-import com.example.simple_stock_market.dto.BankStocksDTO;
+import com.example.simple_stock_market.dto.StockBodyDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +14,15 @@ public class BankController {
         this.bankService = bankService;
     }
 
-    // Punkt 4: GET /stocks
     @GetMapping
-    public ResponseEntity<BankStocksDTO> getBankStocks() {
-        var stocks = bankService.getAllBankStocks();
-        var response = new BankStocksDTO(stocks);
-
+    public ResponseEntity<StockBodyDTO> getBankStocks() {
+        var response = bankService.getAllBankStocks();
         return ResponseEntity.ok(response);
     }
 
-    // Punkt 5: POST /stocks
     @PostMapping
-    public ResponseEntity<Void> setBankStocks(@RequestBody BankStocksDTO request) {
-        bankService.setBankState(request.getStocks());
+    public ResponseEntity<Void> setBankStocks(@RequestBody StockBodyDTO request) {
+        bankService.setBankState(request);
         return ResponseEntity.ok().build();
     }
 }

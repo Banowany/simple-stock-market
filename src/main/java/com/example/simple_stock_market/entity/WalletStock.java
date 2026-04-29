@@ -3,12 +3,11 @@ package com.example.simple_stock_market.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "wallet_stock")
+@Table(name = "wallet_stocks")
 public class WalletStock {
     @EmbeddedId
     private WalletStockId id;
