@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WalletStockRepository extends JpaRepository<WalletStock, WalletStockId> {
     List<WalletStock> findByWalletId(String walletId);
@@ -42,4 +43,13 @@ public interface WalletStockRepository extends JpaRepository<WalletStock, Wallet
     """)
     void deleteIfZero(@Param("walletId") String walletId,
                       @Param("stockName") String stockName);
+
+    @Query("""
+        SELECT w.quantity
+        FROM WalletStock w
+        WHERE w.wallet.id = :walletId
+          AND w.stock.name = :stockName
+    """)
+    Optional<Integer> findQuantity(@Param("walletId") String walletId,
+                          @Param("stockName") String stockName);
 }

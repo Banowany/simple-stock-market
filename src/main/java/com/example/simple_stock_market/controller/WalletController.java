@@ -33,4 +33,12 @@ public class WalletController {
         tradeService.executeTrade(walletId, stockName, request.getType());
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/{walletId}/stocks/{stockName}")
+    public ResponseEntity<Integer> getQuantity(
+            @PathVariable("walletId") String walletId,
+            @PathVariable("stockName") String stockName
+    ) {
+        int quantity = walletService.getQuantity(walletId, stockName);
+        return ResponseEntity.ok(quantity);
+    }
 }

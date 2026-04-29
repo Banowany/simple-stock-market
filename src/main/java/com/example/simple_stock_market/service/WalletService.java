@@ -43,4 +43,10 @@ public class WalletService {
         wallet.setId(walletId);
         walletRepository.save(wallet);
     }
+
+    public int getQuantity(String walletId, String stockName) {
+        var maybeQuantity = walletStockRepository.findQuantity(walletId, stockName);
+
+        return maybeQuantity.orElse(0);
+    }
 }
