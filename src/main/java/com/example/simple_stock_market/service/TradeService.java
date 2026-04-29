@@ -1,8 +1,10 @@
 package com.example.simple_stock_market.service;
 
 import com.example.simple_stock_market.entity.BankStock;
+import com.example.simple_stock_market.entity.TradeLog;
 import com.example.simple_stock_market.entity.Wallet;
 import com.example.simple_stock_market.repository.BankStockRepository;
+import com.example.simple_stock_market.repository.TradeLogRepository;
 import com.example.simple_stock_market.repository.WalletRepository;
 import com.example.simple_stock_market.repository.WalletStockRepository;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,13 @@ public class TradeService {
     private final BankStockRepository bankStockRepository;
     private final WalletRepository walletRepository;
     private final WalletStockRepository walletStockRepository;
+    private final TradeLogRepository tradeLogRepository;
 
-    public TradeService(BankStockRepository bankStockRepository, WalletRepository walletRepository, WalletStockRepository walletStockRepository) {
+    public TradeService(BankStockRepository bankStockRepository, WalletRepository walletRepository, WalletStockRepository walletStockRepository, TradeLogRepository tradeLogRepository) {
         this.bankStockRepository = bankStockRepository;
         this.walletRepository = walletRepository;
         this.walletStockRepository = walletStockRepository;
+        this.tradeLogRepository = tradeLogRepository;
     }
 
 
@@ -49,6 +53,8 @@ public class TradeService {
             }
 
             walletStockRepository.upsertIncrement(walletId, stockName);
+
+            tradeLogRepository.save(TradeLog.of("buy", walletId, stockName));
         } else if ("sell".equalsIgnoreCase(type)) {
 
             int updated = walletStockRepository.decrement(walletId, stockName);
@@ -64,6 +70,7 @@ public class TradeService {
 
             bankStockRepository.increment(stockName);
 
+            tradeLogRepository.save(TradeLog.of("sell", walletId, stockName));
         } else {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
