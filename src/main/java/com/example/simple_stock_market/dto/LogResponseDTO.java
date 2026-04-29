@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class TradeLogDTO {
+public class LogResponseDTO {
     private List<LogItem> log;
 
     @AllArgsConstructor

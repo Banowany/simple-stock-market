@@ -1,11 +1,9 @@
 package com.example.simple_stock_market.service;
 
-import com.example.simple_stock_market.dto.TradeLogDTO;
+import com.example.simple_stock_market.dto.LogResponseDTO;
 import com.example.simple_stock_market.mapper.TradeLogMapper;
 import com.example.simple_stock_market.repository.TradeLogRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TradeLogService {
@@ -17,7 +15,7 @@ public class TradeLogService {
         this.tradeLogMapper = tradeLogMapper;
     }
 
-    public TradeLogDTO getLog() {
+    public LogResponseDTO getLog() {
         return tradeLogMapper.toResponseDTO(logRepo.findAllByOrderByCreatedAtAsc());
     }
 }

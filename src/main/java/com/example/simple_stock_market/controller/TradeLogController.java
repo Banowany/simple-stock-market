@@ -1,6 +1,6 @@
 package com.example.simple_stock_market.controller;
 
-import com.example.simple_stock_market.dto.TradeLogDTO;
+import com.example.simple_stock_market.dto.LogResponseDTO;
 import com.example.simple_stock_market.service.TradeLogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class TradeLogController {
     }
 
     @GetMapping
-    public ResponseEntity<TradeLogDTO> getLog() {
+    public ResponseEntity<LogResponseDTO> getLog() {
         return ResponseEntity.ok(tradeLogService.getLog());
     }
 }
