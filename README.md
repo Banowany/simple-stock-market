@@ -228,3 +228,126 @@ The system is orchestrated using Docker Compose:
 2. Database cluster is initialized
 3. Application instances start
 4. Reverse proxy starts as the entry point
+
+---
+
+## API Overview
+
+The application exposes a REST API for managing wallets, stocks, and audit logs.
+
+---
+
+### Wallet Operations
+
+**Buy / Sell Stock**
+
+```http
+POST /wallets/{wallet_id}/stocks/{stock_name}
+```
+
+Body:
+
+```json
+{
+  "type": "buy" | "sell"
+}
+```
+
+* Creates wallet if it does not exist
+* `buy` decreases stock in bank and increases in wallet
+* `sell` increases stock in bank and decreases in wallet
+* Returns:
+
+    * `200` on success
+    * `400` if operation is not possible (e.g. no stock available)
+    * `404` if stock does not exist
+
+---
+
+**Get Wallet State**
+
+```http
+GET /wallets/{wallet_id}
+```
+
+Response:
+
+```json
+{
+  "id": "wallet_id",
+  "stocks": [
+    { "name": "stock1", "quantity": 10 }
+  ]
+}
+```
+
+* Returns wallet with all owned stocks
+* Returns empty list if wallet has no stocks
+
+---
+
+**Get Stock Quantity in Wallet**
+
+```http
+GET /wallets/{wallet_id}/stocks/{stock_name}
+```
+
+* Returns a number (e.g. `10`)
+* Returns `0` if wallet does not own the stock
+
+---
+
+### Bank Operations
+
+**Set Bank State**
+
+```http
+POST /stocks
+```
+
+Body:
+
+```json
+{
+  "stocks": [
+    { "name": "stock1", "quantity": 100 }
+  ]
+}
+```
+
+* Replaces entire bank state
+* Does not affect wallets
+* Returns `200` on success
+
+---
+
+**Get Bank State**
+
+```http
+GET /stocks
+```
+
+* Returns all available stocks in the bank
+
+---
+
+### Audit Log
+
+```http
+GET /log
+```
+
+* Returns all successful operations (buy/sell)
+* Ordered deterministically
+* Maximum size: 10,000 entries
+
+---
+
+### Chaos Testing
+
+```http
+POST /chaos
+```
+
+* Terminates the instance handling the request
+* Used to verify system resilience and high availability
