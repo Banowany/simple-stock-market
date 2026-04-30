@@ -179,3 +179,52 @@ The system intentionally omits:
 * order matching or order books
 
 These simplifications allow focus on concurrency, consistency, and system design.
+
+---
+
+## Architecture
+
+The system is composed of three main layers:
+
+### Reverse Proxy – NGINX
+
+* Acts as a single entry point (`localhost:PORT`)
+* Distributes incoming requests across application instances (load balancing)
+* Uses passive health checks to avoid routing traffic to failing instances
+
+---
+
+### Application Layer – Spring Boot (3 instances)
+
+* Stateless services handling all business logic
+* Instances do not communicate with each other
+* Each request is processed independently
+* All state is stored in the database
+
+---
+
+### Database Layer – CockroachDB (3-node cluster)
+
+* Stores all application data (bank, wallets, audit log)
+* Provides replication and fault tolerance
+* Ensures consistency using the Raft consensus algorithm
+
+---
+
+### Request Flow
+
+1. Client sends request to `localhost:PORT`
+2. NGINX forwards request to one of the application instances
+3. Application processes request and interacts with the database
+4. Response is returned to the client
+
+---
+
+### Startup Flow
+
+The system is orchestrated using Docker Compose:
+
+1. Database nodes start
+2. Database cluster is initialized
+3. Application instances start
+4. Reverse proxy starts as the entry point
