@@ -69,11 +69,13 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
       timeout: 3s
       retries: 10
+      start_period: 120s
 
   app2:
     build: .
@@ -84,11 +86,13 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
       timeout: 3s
       retries: 10
+      start_period: 120s
 
   app3:
     build: .
@@ -99,11 +103,13 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
       timeout: 3s
       retries: 10
+      start_period: 120s
 
   nginx:
     image: nginx:alpine
