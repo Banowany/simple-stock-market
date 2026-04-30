@@ -351,3 +351,53 @@ POST /chaos
 
 * Terminates the instance handling the request
 * Used to verify system resilience and high availability
+
+---
+
+## Limitations and Trade-offs
+
+This project intentionally simplifies certain aspects to focus on concurrency, consistency, and system design.
+
+---
+
+### Reverse Proxy as Single Point of Failure
+
+The system uses a single reverse proxy (NGINX) as an entry point.
+
+This is a deliberate simplification. In a production environment, this component would typically be replicated or replaced with a managed load balancing solution.
+
+---
+
+### Simplified Market Model
+
+The system does not implement:
+
+* financial balances (users have unlimited funds)
+* price fluctuations (fixed price = 1)
+* order matching (no order book)
+
+These constraints allow focusing on correctness and concurrency rather than financial modeling.
+
+---
+
+### No Authentication
+
+All endpoints are publicly accessible.
+
+Authentication and authorization are intentionally omitted to keep the scope focused on core system behavior.
+
+---
+
+### Database-Centric Coordination
+
+Application instances do not communicate with each other.
+
+All coordination is handled through the database, which simplifies the architecture but makes the system dependent on database performance and correctness.
+
+---
+
+### Centralized Audit Log (Application-Level)
+
+Audit logs are stored in the database and shared across all instances.
+
+This provides a consistent global view of operations and ensures no data is lost when instances fail. However, the system does not include centralized infrastructure for system logs or monitoring.
