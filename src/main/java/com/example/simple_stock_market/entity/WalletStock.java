@@ -20,4 +20,13 @@ public class WalletStock {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    public static WalletStock of(String walletId, BankStock stock, Integer quantity) {
+        var walletStockId = new WalletStockId(walletId, stock.getName());
+        var walletStock = new WalletStock();
+        walletStock.id = walletStockId;
+        walletStock.stock = stock;
+        walletStock.quantity = quantity;
+        return walletStock;
+    }
 }
