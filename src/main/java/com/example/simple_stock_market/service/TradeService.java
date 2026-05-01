@@ -6,7 +6,6 @@ import com.example.simple_stock_market.repository.TradeLogRepository;
 import com.example.simple_stock_market.repository.WalletStockRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,7 +22,7 @@ public class TradeService {
     }
 
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public void executeTrade(String walletId, String stockName, String type) {
         if (!bankStockRepository.existsById(stockName)) {
             throw new ResponseStatusException(
