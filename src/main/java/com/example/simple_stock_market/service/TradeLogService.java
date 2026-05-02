@@ -16,6 +16,6 @@ public class TradeLogService {
     }
 
     public LogResponseDTO getLog() {
-        return tradeLogMapper.toResponseDTO(logRepo.findAllByOrderByCreatedAtAsc());
+        return tradeLogMapper.toResponseDTO(logRepo.findTop10000ByOrderByCreatedAtDescIdDesc().reversed());
     }
 }

@@ -378,7 +378,7 @@ GET /log
 
 * Returns all successful operations (buy/sell)
 * Ordered deterministically
-* Maximum size: 10,000 entries
+* Maximum size: 10,000 newest entries
 
 Logs are returned in order of occurrence, interpreted as chronological order (from oldest to newest).
 
