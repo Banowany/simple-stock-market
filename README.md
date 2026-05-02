@@ -61,6 +61,36 @@ Initial startup may take **1–2 minutes**, as it includes:
 
 ---
 
+## Running Tests
+
+The entire test environment is fully containerized using Docker Compose.
+
+### Run tests
+
+```bash
+docker compose -f docker-compose-test.yml up --build --abort-on-container-exit
+```
+
+### How it works
+
+* The command builds the application and test containers
+* A dedicated test container executes all tests against a real database
+* Other services (e.g. database) are started automatically
+
+### Behavior
+
+* When the test container finishes (success or failure), all other containers from this Compose setup are stopped automatically
+* This applies only to containers defined in `docker-compose-test.yml`
+* Containers from other Docker Compose files or projects are NOT affected
+
+### Notes
+
+* Tests run against a real distributed database environment (CockroachDB cluster)
+* No additional setup is required
+* The environment is fully reproducible via Docker
+
+---
+
 ## Design Decisions
 
 ### Stateless Application Layer
@@ -137,13 +167,22 @@ This reduces complexity while still fulfilling all functional requirements.
 
 ### Bank State Management
 
-The `POST /stocks` endpoint replaces the entire bank state instead of modifying it incrementally.
+The `POST /stocks` endpoint replaces the entire system state.
+
+This operation resets:
+
+* bank stocks
+* all wallets
+* audit log
 
 This approach:
 
-* simplifies initialization and testing
-* ensures deterministic system state
-* avoids hidden state accumulation
+* guarantees full consistency (no dangling references)
+* avoids invalid states where wallets reference non-existing stocks
+* simplifies reasoning about system state in a distributed environment
+* ensures deterministic behavior after reset
+
+This design choice trades partial updates for full state replacement, which is acceptable within the scope of the assignment.
 
 ---
 
@@ -315,8 +354,8 @@ Body:
 }
 ```
 
-* Replaces entire bank state
-* Does not affect wallets
+* Replaces entire system state (bank, wallets, audit log)
+* Acts as a full system reset
 * Returns `200` on success
 
 ---
@@ -340,6 +379,8 @@ GET /log
 * Returns all successful operations (buy/sell)
 * Ordered deterministically
 * Maximum size: 10,000 entries
+
+Logs are returned in order of occurrence, interpreted as chronological order (from oldest to newest).
 
 ---
 
@@ -365,6 +406,36 @@ This project intentionally simplifies certain aspects to focus on concurrency, c
 The system uses a single reverse proxy (NGINX) as an entry point.
 
 This is a deliberate simplification. In a production environment, this component would typically be replicated or replaced with a managed load balancing solution.
+
+---
+
+### Full State Reset on Bank Update
+
+The `POST /stocks` endpoint is designed as a full system reset operation.
+
+It replaces the entire system state, including:
+
+* bank stocks
+* all wallets
+* audit log
+
+This approach prioritizes consistency and simplicity over partial updates.
+
+As a consequence:
+
+* users may lose their holdings when a stock is removed from the bank state
+* audit history is cleared during reset
+* incremental updates of the bank are not supported
+
+The endpoint defines a new authoritative state of the system, which may differ completely from the previous one.
+
+Without resetting dependent data, the system could enter invalid states such as:
+
+* wallets referencing non-existing stocks
+* inconsistent behavior (e.g. `404` when selling previously owned stocks)
+* race conditions between state updates and concurrent trades
+
+By enforcing a full reset, the system guarantees a clean, consistent, and deterministic state across all instances.
 
 ---
 
