@@ -47,6 +47,8 @@ services:
         condition: service_healthy
       db3:
         condition: service_healthy
+    volumes:
+      - ./init.sql:/init.sql
     entrypoint: >
       /bin/bash -c "
       echo 'Checking if cluster is initialized...';
@@ -56,8 +58,13 @@ services:
         echo 'Cluster not initialized. Running init...';
         cockroach init --insecure --host=db1;
       else
-        echo 'Cluster already initialized. Skipping init.';
+        echo 'Cluster already initialized.';
       fi
+
+      echo 'Running schema...';
+      cockroach sql --insecure --host=db1 -f /init.sql;
+
+      echo 'Done';
       "
 
   app1:
@@ -69,7 +76,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
-      spring.jpa.hibernate.ddl-auto: update
+      spring.jpa.hibernate.ddl-auto: validate
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
@@ -86,7 +93,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
-      spring.jpa.hibernate.ddl-auto: none
+      spring.jpa.hibernate.ddl-auto: validate
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
@@ -103,7 +110,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:26257,db2:26257,db3:26257/defaultdb?sslmode=disable
       SPRING_DATASOURCE_USERNAME: root
       SERVER_PORT: 8081
-      spring.jpa.hibernate.ddl-auto: none
+      spring.jpa.hibernate.ddl-auto: validate
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
       interval: 5s
