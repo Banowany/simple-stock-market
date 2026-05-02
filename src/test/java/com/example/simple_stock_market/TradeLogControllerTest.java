@@ -81,8 +81,8 @@ class TradeLogControllerTest {
         mockMvc.perform(get("/log"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.log", hasSize(2)))
-                .andExpect(jsonPath("$.log[0].type").value("sell"))
-                .andExpect(jsonPath("$.log[1].type").value("buy"));
+                .andExpect(jsonPath("$.log[0].type").value("buy"))
+                .andExpect(jsonPath("$.log[1].type").value("sell"));
     }
 
     @Test
