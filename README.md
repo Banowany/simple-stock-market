@@ -41,15 +41,12 @@ http://localhost:XXXX
 
 ---
 
-### Startup Time
+### Tested Environments
 
-Initial startup may take **1–2 minutes**, as it includes:
+The application has been tested on the following platforms:
 
-* building the application image
-* starting the database cluster
-* initializing the cluster
-* starting application instances
-* starting the reverse proxy
+* Raspberry Pi 4, 4 GB RAM (ARM64)
+* Laptop with AMD Ryzen 5 5600, 32 GB RAM (x64)
 
 ---
 
